@@ -13,7 +13,7 @@ namespace SchedAero.UI.ConsoleApp
 {
     class Program
     {
-         static void Main(string[] args)
+        static void Main(string[] args)
         {
             if (args.Length != 2) { throw new Exception("Missing input values: Please provide input xml menu file path followed by page url"); }
 
@@ -36,7 +36,7 @@ namespace SchedAero.UI.ConsoleApp
                 throw new FileNotFoundException(string.Format("Could not locate {0}. Verify file name and location.", filePath));
 
             }
-           
+
 
 
         }
@@ -44,17 +44,18 @@ namespace SchedAero.UI.ConsoleApp
         private static string GetActivePage(Menu menu)
         {
             StringBuilder output = new StringBuilder();
-            
+
             //loop through menu items to set output format
             foreach (var item in menu.MenuItems)
             {
-                if (string.IsNullOrEmpty(item.ParentName))
-                {
-                    output.AppendLine(string.Format("{0}, {1} {2}", item.DisplayName, item.Path,(item.IsActive)?"ACTIVE":string.Empty).Trim());
-                }
-                else {
-                    output.AppendLine( string.Format("\t{0}, {1} {2}", item.DisplayName, item.Path, (item.IsActive) ? "ACTIVE" : string.Empty).TrimEnd());
-                }
+                string tabs = string.Empty;
+                //create indention based on item level
+                for (int i = 0; i < item.Level; i++) { tabs += '\t'; };
+
+                output.Append(tabs);
+                output.Append(string.Format("{0}, {1} {2}", item.DisplayName, item.Path, (item.IsActive) ? "ACTIVE" : string.Empty).Trim());
+                output.Append("\r\n");
+                
             }
 
             return output.ToString();

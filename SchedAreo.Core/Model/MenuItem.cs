@@ -12,5 +12,6 @@ namespace SchedAreo.Core.Model
         public string Path { get; set; }
         public string ParentName { get; set; }
         public bool IsActive { get; set; }
+        public int Level { get; set; }
     }
 }

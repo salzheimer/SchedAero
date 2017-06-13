@@ -52,13 +52,13 @@ namespace SchedAero.Core.Services
                 menuItem.DisplayName = item.Element("displayName").Value;
                 menuItem.Path = item.Element("path").FirstAttribute.Value;
                 menuItem.IsActive = (item.Element("path").FirstAttribute.Value == activePagePath || item.LastNode.ToString().Contains(activePagePath)) ? true : false;
-
+                menuItem.Level = 0;
                 menu.MenuItems.Add(menuItem);
 
                 //get children items based on submenu tag
                 if (item.LastNode.ToString().Contains("subMenu"))
                 {
-                    ParserSubMenu(item.Elements("subMenu").Elements("item"), activePagePath.Trim(), menu, item.Element("displayName").Value);
+                    ParserSubMenu(item.Elements("subMenu").Elements("item"), activePagePath.Trim(), menu, item.Element("displayName").Value,1);
                 }
             }
 
@@ -66,7 +66,7 @@ namespace SchedAero.Core.Services
             return menu;
         }
 
-        private void ParserSubMenu(IEnumerable<XElement> items, string activePagePath, Menu menu, string parentName)
+        private void ParserSubMenu(IEnumerable<XElement> items, string activePagePath, Menu menu, string parentName,int level)
         {
             foreach (var item in items)
             {
@@ -75,12 +75,13 @@ namespace SchedAero.Core.Services
                 menuItem.DisplayName = item.Element("displayName").Value;
                 menuItem.Path = item.Element("path").FirstAttribute.Value;
                 menuItem.IsActive = (item.Element("path").FirstAttribute.Value == activePagePath || item.LastNode.ToString().Contains(activePagePath)) ? true : false;
+                menuItem.Level = level;
 
                 menu.MenuItems.Add(menuItem);
                 //get children items based on submenu tag
                 if (item.LastNode.ToString().Contains("subMenu"))
                 {
-                    ParserSubMenu(item.Elements("subMenu").Elements("item"), activePagePath.Trim(), menu, item.Element("displayName").Value);
+                    ParserSubMenu(item.Elements("subMenu").Elements("item"), activePagePath.Trim(), menu, item.Element("displayName").Value,2);
                 }
             }
         }
