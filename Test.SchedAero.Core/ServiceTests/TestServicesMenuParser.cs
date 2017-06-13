@@ -26,15 +26,14 @@ namespace Test.SchedAero.Core.ServiceTests
         [TestMethod]
         public void Can_Get_XML_File()
         {
-            
 
             var parser = new MenuParser();
 
-           var  xmlDoc=  parser.GetMenuFile(_filePath);
+            var xmlDoc = parser.GetMenuFile(_filePath);
 
-            //todo: assest tests
+
             Assert.IsNotNull(xmlDoc, "Get xml file failed, nothing was returned");
-            Assert.IsTrue(typeof(XDocument)==xmlDoc.GetType(), "Get file reutrned wrong type");
+            Assert.IsTrue(typeof(XDocument) == xmlDoc.GetType(), "Get file reutrned wrong type");
         }
 
         [TestMethod]
@@ -47,17 +46,19 @@ namespace Test.SchedAero.Core.ServiceTests
 
             var xmlDoc = parser.GetMenuFile(@"C:\Users\scottalzheimer\Desktop\Avinode assesment\SchedAero Menu.txt");
 
-            //todo: assest tests
+            Assert.IsInstanceOfType(xmlDoc, typeof(FileFormatException), "Did not receive expected file format exception");
+            
         }
         [TestMethod]
         public void Can_Parse_SchedAero_Xml_Menu_XDocument()
         {
             var parser = new MenuParser();
 
-           
-            //todo:add assert that xmlDoc is valid before continuing
 
-            parser.ParseMenuFile(_filePath,_activePage);
+            var result = parser.ParseMenuFile(_filePath, _activePage);
+
+            Assert.IsNotNull(result, "SchedAero xml menu was null");
+            Assert.IsTrue(result.MenuItems.Count > 0, "SchedAero xml menu contained no menu items");
 
         }
         [TestMethod]
@@ -66,10 +67,10 @@ namespace Test.SchedAero.Core.ServiceTests
             var parser = new MenuParser();
 
 
-            //todo:add assert that xmlDoc is valid before continuing
 
-            parser.ParseMenuFile(@"C:\Users\scottalzheimer\Desktop\Avinode assesment\Wyvern Menu.xml" , _activePage);
-
+            var result = parser.ParseMenuFile(@"C:\Users\scottalzheimer\Desktop\Avinode assesment\Wyvern Menu.xml", _activePage);
+            Assert.IsNotNull(result, "Wyvern xml menu was null");
+            Assert.IsTrue(result.MenuItems.Count > 0, "Wyvern xml menu contained no menu items");
         }
 
     }
